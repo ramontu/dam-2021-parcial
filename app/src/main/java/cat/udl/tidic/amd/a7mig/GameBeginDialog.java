@@ -4,6 +4,8 @@ package cat.udl.tidic.amd.a7mig;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
+import android.net.ParseException;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,6 +21,7 @@ import androidx.fragment.app.DialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 
 public class GameBeginDialog extends DialogFragment {
@@ -77,18 +80,39 @@ public class GameBeginDialog extends DialogFragment {
     private void onDoneClicked() {
         List<String> noms = new ArrayList<>();
         List<Integer> apostes = new ArrayList<>();
+        boolean error=false;
 
         for (int i = 0; i < jugadores; i++) {
             EditText editText = gameSettingLayout.findViewById(20000+i);
             String value = editText.getText().toString();
-            String nom = value.split(";")[0];
-            int aposta = Integer.parseInt(value.split(";")[1]);
-            noms.add(i,nom);
-            apostes.add(i,aposta);
-            Log.d(TAG, "noms:"+ noms.toString());
-            Log.d(TAG, "apostes:"+ apostes.toString());
+
+            try{
+                String nom = value.split(";")[0];
+                Log.d("Nom:", nom);
+                int aposta = Integer.parseInt(value.split(";")[1]);
+                Log.d("Aposta:", String.valueOf(aposta));
+                if ((aposta >= 5 && aposta<=1000) && validació(nom)){
+                    noms.add(i,nom);
+                    apostes.add(i,aposta);
+                    activity.setNomAposta(noms,apostes);
+                    this.dismiss();
+                }
+                else {
+                    editText.setError("Error de format");
+                    error = true;
+                }
+            }
+            catch (Exception e){
+                editText.setError("Error de format");
+                e.printStackTrace();
+                error = true;
+            }
         }
-        dismiss();
+        if (!error){
+            activity.setNomAposta(noms,apostes);
+            this.dismiss();
+        }
+
     }
 
 
@@ -120,5 +144,13 @@ public class GameBeginDialog extends DialogFragment {
             }
         });
 
-}
+    }
+
+    private boolean validació(String string){
+        return patternIsValid(string, "[a-z]{3,7}");
+    }
+
+    private static boolean patternIsValid(String entrada, String patro){
+        return Pattern.matches(patro,entrada);
+    }
 }

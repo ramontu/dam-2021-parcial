@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import cat.udl.tidic.amd.a7mig.viewmodel.GameActivityViewModel;
+
 
 public class GameBeginDialog extends DialogFragment {
 
@@ -36,6 +38,7 @@ public class GameBeginDialog extends DialogFragment {
     public static GameBeginDialog newInstance(GameActivity activity) {
         GameBeginDialog dialog = new GameBeginDialog();
         dialog.activity = activity;
+
         return dialog;
     }
 
@@ -94,8 +97,6 @@ public class GameBeginDialog extends DialogFragment {
                 if ((aposta >= 5 && aposta<=1000) && validació(nom)){
                     noms.add(i,nom);
                     apostes.add(i,aposta);
-                    activity.setNomAposta(noms,apostes);
-                    this.dismiss();
                 }
                 else {
                     editText.setError("Error de format");
@@ -109,7 +110,8 @@ public class GameBeginDialog extends DialogFragment {
             }
         }
         if (!error){
-            activity.setNomAposta(noms,apostes);
+            activity.gameActivityViewModel.setjugadors(noms,apostes);
+            activity.afegir_observadors();
             this.dismiss();
         }
 

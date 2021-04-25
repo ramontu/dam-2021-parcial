@@ -72,6 +72,7 @@ public class GameEndDialog extends DialogFragment {
 
     private void onNewGame() {
         dismiss();
+        activity.gameActivityViewModel.processar_final_ronda();
         activity.initView();
     }
 

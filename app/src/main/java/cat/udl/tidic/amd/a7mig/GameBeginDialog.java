@@ -97,9 +97,11 @@ public class GameBeginDialog extends DialogFragment {
     }
     
     private void onDoneClicked() {
-        List<String> noms = new ArrayList<>();
-        List<Integer> apostes = new ArrayList<>();
+        List<String> noms = new ArrayList<>(jugadores);
+        List<Integer> apostes = new ArrayList<>(jugadores);
         boolean error=false;
+
+
 
         for (int i = 0; i < jugadores; i++) {
             EditText editText = gameSettingLayout.findViewById(20000+i);
@@ -117,12 +119,14 @@ public class GameBeginDialog extends DialogFragment {
                 else {
                     editText.setError("Error de format");
                     error = true;
+                    break;
                 }
             }
             catch (Exception e){
                 editText.setError("Error de format");
                 e.printStackTrace();
                 error = true;
+                break;
             }
         }
         if (!error){

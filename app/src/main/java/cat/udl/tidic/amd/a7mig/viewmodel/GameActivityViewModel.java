@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ import cat.udl.tidic.amd.a7mig.models.Jugador;
 import cat.udl.tidic.amd.a7mig.models.Partida;
 import cat.udl.tidic.amd.a7mig.preferences.PreferenceProvider;
 
-public class GameActivityViewModel {
+public class GameActivityViewModel extends ViewModel {
     private MutableLiveData<Partida> partidaMutableLiveData;
     private int jugador_actual = 0;
     private MutableLiveData<Jugador> m_juga_actual;

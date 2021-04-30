@@ -21,6 +21,7 @@ import androidx.fragment.app.DialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
 import cat.udl.tidic.amd.a7mig.viewmodel.GameActivityViewModel;
@@ -76,7 +77,22 @@ public class GameBeginDialog extends DialogFragment {
     private void onDialogShow(AlertDialog dialog) {
         Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
         positiveButton.setOnClickListener(v -> {
-            onDoneClicked();
+            EditText editText = rootView.findViewById(R.id.numeroJugadorsET);
+            int num=0;
+            try {
+                num = Integer.parseInt(editText.getText().toString());
+                if (num > 0){
+                    onDoneClicked();
+                }
+                else {
+                    editText.setError("Ha de ser un nombre major de 0");
+                }
+            }
+            catch (Exception e){
+                editText.setError("Ha de ser un nombre major de 0");
+                e.printStackTrace();
+            }
+
         });
     }
     
